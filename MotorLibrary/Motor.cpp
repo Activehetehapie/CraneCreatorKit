@@ -1,6 +1,8 @@
 #include "Arduino.h"
 #include "Motor.h"
 
+clamp(int, int, int);
+
 Motor::Motor(int PWM, int IN1, int IN2, int STBY, int CHANNEL) {
     _PWM = PWM;
     _IN1 = IN1;
@@ -18,11 +20,7 @@ Motor::Motor(int PWM, int IN1, int IN2, int STBY, int CHANNEL) {
 }
 
 void Motor::forward(int speed) {
-    if (speed > 255) {
-        speed = 255;
-    } else if (speed < 0) {
-        speed = 0;
-    }
+    speed = clamp(0, 255, speed);
     digitalWrite(_STBY, HIGH);
     digitalWrite(_IN1, HIGH);
     digitalWrite(_IN2, LOW);
@@ -30,11 +28,7 @@ void Motor::forward(int speed) {
 }
 
 void Motor::backward(int speed) {
-    if (speed > 255) {
-        speed = 255;
-    } else if (speed < 0) {
-        speed = 0;
-    }
+    speed = clamp(0, 255, speed);
     digitalWrite(_STBY, HIGH);
     digitalWrite(_IN1, LOW);
     digitalWrite(_IN2, HIGH);
@@ -70,4 +64,13 @@ void turn(Motor& left, Motor& right, int direction, int speed) {
 void brake(Motor& left, Motor& right) {
     left.brake();
     right.brake();
+}
+
+int clamp(int lowerbound, int upperbound, int number) {
+    if (number > upperbound) {
+        return upperbound;
+    } else if (number < lowerbound) {
+        return lowerbound;
+    }
+    return number;
 }
