@@ -1,7 +1,7 @@
 #include "Arduino.h"
 #include "Motor.h"
 
-clamp(int, int, int);
+int clamp(int, int, int);
 
 Motor::Motor(int PWM, int IN1, int IN2, int STBY, int CHANNEL) {
     _PWM = PWM;
