@@ -1,5 +1,6 @@
 #include "Arduino.h"
 #include "Motor.h"
+#include <driver/ledc.h>
 
 int clamp(int, int, int);
 
