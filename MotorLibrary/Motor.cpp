@@ -15,9 +15,9 @@ Motor::Motor(int PWM, int IN1, int IN2, int STBY, int CHANNEL) {
     pinMode(_IN1, OUTPUT);
     pinMode(_IN2, OUTPUT);
     pinMode(_STBY, OUTPUT);
-    ledcSetup(_CHANNEL, 5000, 8);
-    ledcAttachPin(_PWM, _CHANNEL);
-    ledcWrite(_CHANNEL, 255);
+
+    ledcAttachChannel(_PWM, 5000, 8, _CHANNEL);
+    ledcWrite(_PWM, 255);
 }
 
 void Motor::forward(int speed) {
@@ -25,7 +25,7 @@ void Motor::forward(int speed) {
     digitalWrite(_STBY, HIGH);
     digitalWrite(_IN1, HIGH);
     digitalWrite(_IN2, LOW);
-    ledcWrite(_CHANNEL, speed);
+    ledcWrite(_PWM, speed);
 }
 
 void Motor::backward(int speed) {
@@ -33,7 +33,7 @@ void Motor::backward(int speed) {
     digitalWrite(_STBY, HIGH);
     digitalWrite(_IN1, LOW);
     digitalWrite(_IN2, HIGH);
-    ledcWrite(_CHANNEL, speed);
+    ledcWrite(_PWM, speed);
 }
 
 void Motor::brake() {
@@ -58,7 +58,7 @@ void turn(Motor& left, Motor& right, int direction, int speed) {
         right.forward(speed);
     } else {
         left.forward(speed);
-        right.forward(speed);
+        right.backward(speed);
     }
 }
 
